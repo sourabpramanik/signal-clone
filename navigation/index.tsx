@@ -3,16 +3,17 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, useNavigation} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { ColorSchemeName,Text, StyleSheet, View, Image, useWindowDimensions } from 'react-native';
+import { ColorSchemeName,Text, StyleSheet, View, Image, useWindowDimensions, Pressable } from 'react-native';
 import { Feather, Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import ChatRoomScreen from '../screens/ChatRoomScreen'
 import HomeScreen from '../screens/HomeScreen'
+import AllUsersScreen from '../screens/AllUsersScreen'
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -38,6 +39,10 @@ function RootNavigator() {
         name="ChatRoom" 
         component={ChatRoomScreen}
         options={{headerTitle:ChatRoomHeader, headerStyle:{backgroundColor:"#3872E9"}}}/>
+      <Stack.Screen 
+        name="Users" 
+        component={AllUsersScreen} 
+        options={{title:"Users"}}/>
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
@@ -45,7 +50,7 @@ function RootNavigator() {
 
 const HomeHeader=(props)=>{
 const {width} = useWindowDimensions()
-
+const navigation = useNavigation()
  return(
    <View style={{
      width, 
@@ -57,7 +62,9 @@ const {width} = useWindowDimensions()
       <Text style={styles.homeText}>Signal</Text>
       <View style={styles.iconContainer}>
         <Feather name="camera" size={24} color="black" style={styles.icon}/>
-        <Feather name="edit-2" size={24} color="black" style={styles.icon}/>
+        <Pressable onPress={()=>navigation.navigate("Users")}>
+          <Feather name="edit-2" size={24} color="black" style={styles.icon}/>
+        </Pressable>
       </View>
    </View>
  )
